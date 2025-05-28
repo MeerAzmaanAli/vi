@@ -96,7 +96,7 @@ function toggleMobileMenu() {
     body.style.overflow = navDrawer.classList.contains('active') ? 'hidden' : '';
 }
 
-// Event listeners
+// Event listeners for mobile menu
 mobileMenuBtn.addEventListener('click', toggleMobileMenu);
 overlay.addEventListener('click', toggleMobileMenu);
 
