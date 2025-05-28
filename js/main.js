@@ -78,34 +78,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Mobile navigation toggle (to be implemented)
-const createMobileNav = () => {
-    const nav = document.querySelector('.nav');
-    const mobileNavButton = document.createElement('button');
-    mobileNavButton.className = 'mobile-nav-toggle';
-    mobileNavButton.innerHTML = `
-        <span class="hamburger"></span>
-    `;
-    
-    mobileNavButton.style.cssText = `
-        display: none;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0.5rem;
-    `;
-    
-    if (window.innerWidth <= 768) {
-        mobileNavButton.style.display = 'block';
-        nav.appendChild(mobileNavButton);
-        
-        mobileNavButton.addEventListener('click', () => {
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-        });
-    }
-};
+// Mobile Navigation Drawer
+const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+const navDrawer = document.querySelector('.nav-drawer');
+const body = document.body;
 
-// Initialize mobile navigation
-window.addEventListener('load', createMobileNav);
-window.addEventListener('resize', createMobileNav); 
+// Create overlay element
+const overlay = document.createElement('div');
+overlay.className = 'nav-overlay';
+document.body.appendChild(overlay);
+
+// Toggle mobile menu
+function toggleMobileMenu() {
+    mobileMenuBtn.classList.toggle('active');
+    navDrawer.classList.toggle('active');
+    overlay.classList.toggle('active');
+    body.style.overflow = navDrawer.classList.contains('active') ? 'hidden' : '';
+}
+
+// Event listeners
+mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+overlay.addEventListener('click', toggleMobileMenu);
+
+// Close mobile menu when clicking a link
+document.querySelectorAll('.nav-drawer .nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        if (navDrawer.classList.contains('active')) {
+            toggleMobileMenu();
+        }
+    });
+});
+
+// Close mobile menu on window resize if open
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768 && navDrawer.classList.contains('active')) {
+        toggleMobileMenu();
+    }
+}); 
